@@ -4,7 +4,8 @@ import random
 
 parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
 parser.add_argument('integers',type=int, help='The number of iterations')
-parser.add_argument('--date')
+#parser.add_argument('--date','-d', action='store_true')
+parser.add_argument('--uniform','-u', action='store_true')
 args = parser.parse_args()
 
 formats = {}
@@ -34,6 +35,9 @@ formats['seperators'] = [
 	]
 
 if args.integers == -1: args.integers = len(formats['date'])
+theseperator = None
+if args.uniform:
+	theseperator = random.choice(formats['seperators'])
 
 output = ""
 outputfmtcode = ""
@@ -46,7 +50,10 @@ for i in range(args.integers, 0, -1):
 	output += choice['p']
 	outputfmtcode += choice['f']
 	if i != 1:
-		choice = random.choice(formats['seperators'])
+		if theseperator == None:
+			choice = random.choice(formats['seperators'])
+		else:
+			choice = theseperator
 		#formats['seperators'].remove(choice)
 		output += ", " + choice['p'] + ", "
 		outputfmtcode += choice['f']
